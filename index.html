@@ -1,0 +1,1217 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cosmos Fleur - 角色设定羊皮卷</title>
+<style>
+  :root {
+    --al-bg: #2c251e;
+    --al-text: #d4c5b0;
+    --al-accent: #c49a45;
+    --al-border: #5c4d3c;
+    --al-panel: rgba(20, 16, 13, 0.85);
+  }
+
+  body {
+    background: var(--al-bg) url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h100v100H0z" fill="%232c251e"/><path d="M50 10l5 10h10l-8 7 3 10-10-7-10 7 3-10-8-7h10z" fill="%233a3025" opacity="0.3"/></svg>') repeat;
+    color: var(--al-text);
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    line-height: 1.6;
+    padding: 20px;
+    box-sizing: border-box;
+    margin: 0;
+  }
+
+  .al-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--al-panel);
+    border: 2px solid var(--al-border);
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.8), inset 0 0 15px rgba(196, 154, 69, 0.1);
+    position: relative;
+  }
+
+  .al-container::before {
+    content: '';
+    position: absolute;
+    top: 5px; left: 5px; right: 5px; bottom: 5px;
+    border: 1px solid rgba(196, 154, 69, 0.3);
+    pointer-events: none;
+  }
+
+  h1, h2 {
+    color: var(--al-accent);
+    text-align: center;
+    font-weight: normal;
+    border-bottom: 1px solid var(--al-border);
+    padding-bottom: 10px;
+    margin-top: 30px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  h1 { font-size: 24px; margin-top: 0; }
+  h2 { font-size: 18px; }
+
+  .al-section { margin-bottom: 25px; }
+
+  .al-input, .al-textarea {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--al-border);
+    color: var(--al-accent);
+    padding: 8px 12px;
+    font-family: inherit;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 4px;
+    transition: border-color 0.3s;
+  }
+
+  .al-input.inline-input {
+    width: auto;
+    min-width: 100px;
+    margin-left: 5px;
+    margin-right: 15px;
+    display: inline-block;
+    border-bottom: 1px dashed var(--al-accent);
+    border-top: none; border-left: none; border-right: none;
+    border-radius: 0;
+    background: transparent;
+    padding: 2px 5px;
+  }
+
+  .al-input:focus, .al-textarea:focus {
+    outline: none;
+    border-color: var(--al-accent);
+  }
+
+  .al-textarea {
+    resize: vertical;
+    min-height: 80px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+
+  .al-details {
+    background: rgba(44, 37, 30, 0.6);
+    border: 1px solid var(--al-border);
+    margin-bottom: 10px;
+    border-radius: 4px;
+  }
+
+  .al-summary {
+    padding: 10px 15px;
+    cursor: pointer;
+    color: var(--al-accent);
+    font-weight: bold;
+    user-select: none;
+    list-style: none;
+  }
+
+  .al-summary::-webkit-details-marker { display: none; }
+
+  .al-summary::before {
+    content: '✦';
+    margin-right: 8px;
+    color: var(--al-border);
+    transition: transform 0.3s;
+    display: inline-block;
+  }
+
+  .al-details[open] .al-summary::before {
+    transform: rotate(90deg);
+    color: var(--al-accent);
+  }
+
+  .al-details-content {
+    padding: 15px;
+    border-top: 1px solid var(--al-border);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+    align-items: center;
+  }
+
+  .al-checkbox-label {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+    position: relative;
+    padding-right: 20px;
+    margin-right: 10px;
+  }
+
+  .al-checkbox-label input[type="checkbox"] {
+    display: none;
+  }
+
+  .al-checkmark {
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--al-border);
+    margin-right: 8px;
+    position: relative;
+    display: inline-block;
+    background: rgba(0,0,0,0.5);
+    flex-shrink: 0;
+  }
+
+  .al-checkbox-label input[type="checkbox"]:checked + .al-checkmark::after {
+    content: '✖';
+    position: absolute;
+    color: var(--al-accent);
+    font-size: 14px;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .tag-delete-btn {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8b3a3a;
+    font-size: 16px;
+    font-weight: bold;
+    opacity: 0.3;
+    transition: opacity 0.2s, color 0.2s;
+    padding: 0 5px;
+  }
+
+  .al-checkbox-label:hover .tag-delete-btn {
+    opacity: 1;
+    color: #d9534f;
+  }
+
+  .al-footer {
+    text-align: center;
+    margin-top: 40px;
+    font-style: italic;
+    color: var(--al-border);
+    font-size: 12px;
+  }
+
+  .tag-add-group {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--al-border);
+  }
+
+  .al-btn {
+    background: transparent;
+    border: 1px solid var(--al-border);
+    color: var(--al-accent);
+    cursor: pointer;
+    padding: 5px 15px;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: all 0.3s;
+    margin: 0 10px;
+  }
+
+  .al-btn:hover {
+    border-color: var(--al-accent);
+    background: rgba(196, 154, 69, 0.1);
+  }
+
+  .base-info-row {
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="al-container">
+  <h1>《造物真理卷轴》</h1>
+
+  <h2>基础信息 CHARACTER</h2>
+  <div class="al-section">
+    <div class="base-info-row">
+      姓名 <input type="text" class="al-input inline-input" data-key="姓名" style="width:120px;">
+      性别 <input type="text" class="al-input inline-input" data-key="性别" style="width:80px;">
+      年龄 <input type="text" class="al-input inline-input" data-key="年龄" style="width:80px;">
+      种族 <input type="text" class="al-input inline-input" data-key="种族" style="width:120px;">
+      血型 <input type="text" class="al-input inline-input" data-key="血型" style="width:80px;">
+    </div>
+
+    <div class="base-info-row" data-field="特殊血液">
+      >> 特殊血液
+      <label class="al-checkbox-label"><input type="checkbox" value="无"><span class="al-checkmark"></span>无</label>
+      <label class="al-checkbox-label"><input type="checkbox" value="有"><span class="al-checkmark"></span>有 ➔ <input type="text" class="al-input inline-input" data-key="特殊血液详情" placeholder="输入详情..."></label>
+    </div>
+
+    <div class="base-info-row" data-field="特殊身体特征">
+      >> 特殊身体特征（如身高、体重）
+      <label class="al-checkbox-label"><input type="checkbox" value="无"><span class="al-checkmark"></span>无</label>
+      <label class="al-checkbox-label"><input type="checkbox" value="有"><span class="al-checkmark"></span>有 ➔ <input type="text" class="al-input inline-input" data-key="特殊身体特征详情" placeholder="输入详情..."></label>
+    </div>
+
+    <div class="base-info-row">
+      身份/职业 <input type="text" class="al-input inline-input" data-key="身份职业" style="width:200px;">
+    </div>
+
+    <div class="base-info-row" data-field="隐蔽身份">
+      隐蔽身份
+      <label class="al-checkbox-label"><input type="checkbox" value="无"><span class="al-checkmark"></span>无</label>
+      <label class="al-checkbox-label"><input type="checkbox" value="有"><span class="al-checkmark"></span>有 ➔ <input type="text" class="al-input inline-input" data-key="隐蔽身份详情"></label>
+    </div>
+
+    <div class="base-info-row">
+      教育状况 <input type="text" class="al-input inline-input" data-key="教育状况" style="width:200px;">
+    </div>
+
+    <div class="base-info-row" data-field="语言">
+      语言
+      <label class="al-checkbox-label"><input type="checkbox" value="通用语"><span class="al-checkmark"></span>通用语</label>
+      <label class="al-checkbox-label"><input type="checkbox" value="特定语言"><span class="al-checkmark"></span>特定语言 ➔ <input type="text" class="al-input inline-input" data-key="特定语言详情"></label>
+    </div>
+
+    <div class="base-info-row" data-field="是否有信仰">
+      是否有信仰
+      <label class="al-checkbox-label"><input type="checkbox" value="无"><span class="al-checkmark"></span>无</label>
+      <label class="al-checkbox-label"><input type="checkbox" value="有"><span class="al-checkmark"></span>有 ➔ <input type="text" class="al-input inline-input" data-key="信仰详情"></label>
+    </div>
+
+    <div class="base-info-row">
+      爱好 <input type="text" class="al-input inline-input" data-key="爱好" style="width:60%;">
+    </div>
+    <div class="base-info-row">
+      在意的人 <input type="text" class="al-input inline-input" data-key="在意的人" style="width:60%;">
+    </div>
+    <div class="base-info-row">
+      讨厌的事物 <input type="text" class="al-input inline-input" data-key="讨厌的事物" style="width:60%;">
+    </div>
+
+    <div class="base-info-row" data-field="亲密关系">
+      亲密关系
+      <label class="al-checkbox-label"><input type="checkbox" value="无伴侣"><span class="al-checkmark"></span>无伴侣</label>
+      <label class="al-checkbox-label"><input type="checkbox" value="有伴侣"><span class="al-checkmark"></span>有伴侣</label>
+      <label class="al-checkbox-label"><input type="checkbox" value="特殊情况"><span class="al-checkmark"></span>特殊情况 ➔ <input type="text" class="al-input inline-input" data-key="亲密关系特殊情况"></label>
+    </div>
+
+    <div class="base-info-row" data-field="是否拥有子女">
+      是否拥有子女
+      <label class="al-checkbox-label"><input type="checkbox" value="无"><span class="al-checkmark"></span>无</label>
+      <label class="al-checkbox-label"><input type="checkbox" value="有"><span class="al-checkmark"></span>有 ➔ 子女人数 <input type="text" class="al-input inline-input" data-key="子女人数" style="width:50px;"></label>
+    </div>
+
+    <div class="base-info-row" data-field="特殊装备">
+      特殊装备/随身携带的非常见必需品
+      <br>
+      <label class="al-checkbox-label" style="margin-top:5px;"><input type="checkbox" value="消耗品"><span class="al-checkmark"></span>消耗品</label>
+      <label class="al-checkbox-label" style="margin-top:5px;"><input type="checkbox" value="工具类"><span class="al-checkmark"></span>工具类</label>
+      <label class="al-checkbox-label" style="margin-top:5px;"><input type="checkbox" value="其他"><span class="al-checkmark"></span>其他 ➔ <input type="text" class="al-input inline-input" data-key="特殊装备其他"></label>
+    </div>
+
+    <p>需要额外说明的事：
+    <textarea class="al-textarea" data-key="额外说明" placeholder="（请在此处填写需要额外说明的事项）"></textarea>
+
+    <details class="al-details" data-section="生命状态定论">
+      <summary class="al-summary">生命状态定论</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        <label class="al-checkbox-label">
+          <input type="checkbox" value="自然死亡"><span class="al-checkmark"></span>
+          自然死亡（如灵魂衰竭/寿终正寝）
+        </label>
+        <label class="al-checkbox-label">
+          <input type="checkbox" value="非自然死亡"><span class="al-checkmark"></span>
+          非自然死亡 ➔ 原因：<input type="text" class="al-input inline-input" data-key="死因" placeholder="输入死因...">
+        </label>
+      </div>
+    </details>
+  </div>
+
+  <h2>性格设定 PERSONALITY</h2>
+  <div class="al-section">
+    <p>对角色性格的整体观测：
+    <textarea class="al-textarea" data-key="性格整体观测" placeholder="（请在此处填写对角色性格的整体想法）"></textarea>
+
+    <details class="al-details" data-section="外显性格">
+      <summary class="al-summary">外显性格（表层伪装/第一印象）</summary>
+      <div class="al-details-content" id="ext-traits-container" data-deletable="true">
+        <label class="al-checkbox-label"><input type="checkbox" value="耿直"><span class="al-checkmark"></span>耿直</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="憨厚"><span class="al-checkmark"></span>憨厚</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="机灵"><span class="al-checkmark"></span>机灵</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="直爽"><span class="al-checkmark"></span>直爽</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="单纯"><span class="al-checkmark"></span>单纯</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="老实"><span class="al-checkmark"></span>老实</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="开朗"><span class="al-checkmark"></span>开朗</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="和善"><span class="al-checkmark"></span>和善</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="温柔"><span class="al-checkmark"></span>温柔</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="自信"><span class="al-checkmark"></span>自信</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="严厉"><span class="al-checkmark"></span>严厉</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="工作狂"><span class="al-checkmark"></span>工作狂</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="戒备心强"><span class="al-checkmark"></span>戒备心强</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="能言善辩"><span class="al-checkmark"></span>能言善辩</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="倔强"><span class="al-checkmark"></span>倔强</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="散漫"><span class="al-checkmark"></span>散漫</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="油腻"><span class="al-checkmark"></span>油腻</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="易怒"><span class="al-checkmark"></span>易怒</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="软弱"><span class="al-checkmark"></span>软弱</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="自卑"><span class="al-checkmark"></span>自卑</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="圆滑"><span class="al-checkmark"></span>圆滑</label>
+
+        <div class="tag-add-group">
+          <input type="text" class="al-input" id="new-ext-tag" placeholder="添加自定义外显特质...">
+          <button class="al-btn" onclick="addTag('ext-traits-container', 'new-ext-tag')">+</button>
+        </div>
+      </div>
+    </details>
+
+    <details class="al-details" data-section="隐性性格">
+      <summary class="al-summary">隐性性格（核心灵魂/真实特质）</summary>
+      <div class="al-details-content" id="int-traits-container" data-deletable="true">
+        <label class="al-checkbox-label"><input type="checkbox" value="高情商"><span class="al-checkmark"></span>高情商</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="有原则"><span class="al-checkmark"></span>有原则</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="逻辑性强"><span class="al-checkmark"></span>逻辑性强</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="浪漫"><span class="al-checkmark"></span>浪漫</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="理智"><span class="al-checkmark"></span>理智</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="坚定"><span class="al-checkmark"></span>坚定</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="仗义"><span class="al-checkmark"></span>仗义</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="诚实"><span class="al-checkmark"></span>诚实</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="责任心强"><span class="al-checkmark"></span>责任心强</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="控制"><span class="al-checkmark"></span>控制</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="嘴硬心软"><span class="al-checkmark"></span>嘴硬心软</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="要强"><span class="al-checkmark"></span>要强</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="傲气"><span class="al-checkmark"></span>傲气</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="能忍耐"><span class="al-checkmark"></span>能忍耐</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="狡猾"><span class="al-checkmark"></span>狡猾</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="两面三刀"><span class="al-checkmark"></span>两面三刀</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="贪婪"><span class="al-checkmark"></span>贪婪</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="反社会"><span class="al-checkmark"></span>反社会</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="疯狂"><span class="al-checkmark"></span>疯狂</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="自私"><span class="al-checkmark"></span>自私</label>
+
+        <div class="tag-add-group">
+          <input type="text" class="al-input" id="new-int-tag" placeholder="添加自定义隐性特质...">
+          <button class="al-btn" onclick="addTag('int-traits-container', 'new-int-tag')">+</button>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <h2>内心侧写 PROFILE IN</h2>
+  <div class="al-section">
+    <details class="al-details" data-section="角色的内心状态">
+      <summary class="al-summary">角色的内心状态</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        <label class="al-checkbox-label"><input type="checkbox" value="积极情绪"><span class="al-checkmark"></span>积极情绪 (如开心、干劲十足等)</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="消极情绪"><span class="al-checkmark"></span>消极情绪 (如自卑、愤怒、忧伤、妒忌等)</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="平和情绪"><span class="al-checkmark"></span>平和情绪 (如平和、安逸等)</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="极端情绪"><span class="al-checkmark"></span>极端情绪 (如强攻击性、非常敏感/易感等)</label>
+      </div>
+    </details>
+
+    <p>置身人群聚会时反应：<input type="text" class="al-input inline-input" data-key="人群聚会反应" placeholder="输入反应...">
+    <p>一个人独处时反应：<input type="text" class="al-input inline-input" data-key="独处反应" placeholder="输入反应...">
+
+    <details class="al-details" data-section="信仰与崇拜对象">
+      <summary class="al-summary">信仰与崇拜对象</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        <label class="al-checkbox-label"><input type="checkbox" value="没有"><span class="al-checkmark"></span>没有</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="有"><span class="al-checkmark"></span>有 ➔ 是：<input type="text" class="al-input inline-input" data-key="崇拜对象" placeholder="崇拜对象..."></label>
+        <br>是否模仿：<br>
+        <label class="al-checkbox-label"><input type="checkbox" value="不模仿"><span class="al-checkmark"></span>没有</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="模仿"><span class="al-checkmark"></span>有 ➔ 模仿内容：<input type="text" class="al-input inline-input" data-key="模仿内容" placeholder="模仿的内容..."></label>
+      </div>
+    </details>
+
+    <details class="al-details" data-section="人际关系特殊事件">
+      <summary class="al-summary">人际关系特殊事件</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        <label class="al-checkbox-label"><input type="checkbox" value="没有"><span class="al-checkmark"></span>没有</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="有"><span class="al-checkmark"></span>有 ➔ 事件：<input type="text" class="al-input inline-input" data-key="特殊事件内容" style="width: 60%;" placeholder="发生的特殊事件..."></label>
+        <br>角色的反应：<br>
+        <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:5px; margin-bottom:5px;">
+          <label class="al-checkbox-label"><input type="checkbox" value="新奇"><span class="al-checkmark"></span>新奇</label>
+          <label class="al-checkbox-label"><input type="checkbox" value="毫不在乎"><span class="al-checkmark"></span>毫不在乎</label>
+          <label class="al-checkbox-label"><input type="checkbox" value="习以为常"><span class="al-checkmark"></span>习以为常</label>
+          <label class="al-checkbox-label"><input type="checkbox" value="立刻爆发"><span class="al-checkmark"></span>立刻爆发</label>
+          <label class="al-checkbox-label"><input type="checkbox" value="积怨在心"><span class="al-checkmark"></span>积怨在心</label>
+          <label class="al-checkbox-label"><input type="checkbox" value="伺机报复"><span class="al-checkmark"></span>伺机报复</label>
+          <label class="al-checkbox-label"><input type="checkbox" value="其他"><span class="al-checkmark"></span>其他：<input type="text" class="al-input inline-input" data-key="特殊事件反应_其他" placeholder="输入其他反应..."></label>
+        </div>
+        性格是否转变：<br>
+        <label class="al-checkbox-label"><input type="checkbox" value="未转变"><span class="al-checkmark"></span>没有</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="已转变"><span class="al-checkmark"></span>有 ➔ 转变内容：<input type="text" class="al-input inline-input" data-key="性格转变内容" style="width: 60%;" placeholder="如何转变..."></label>
+      </div>
+    </details>
+  </div>
+
+  <h2>童年 CHILDHOOD</h2>
+  <div class="al-section">
+    <details class="al-details" data-section="童年成长环境">
+      <summary class="al-summary">角色童年主要在什么环境里成长?</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        <label class="al-checkbox-label"><input type="checkbox" value="原生家庭"><span class="al-checkmark"></span>原生家庭</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="非原生家庭"><span class="al-checkmark"></span>非原生家庭</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="非家庭的环境"><span class="al-checkmark"></span>非家庭的环境</label>
+      </div>
+    </details>
+
+    <p>简单描述角色的成长环境(亲人/玩伴/大环境等)：
+    <textarea class="al-textarea" data-key="成长环境描述"></textarea>
+
+    <details class="al-details" data-section="成长环境氛围">
+      <summary class="al-summary">成长环境的氛围是怎样的?</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        <label class="al-checkbox-label"><input type="checkbox" value="开朗"><span class="al-checkmark"></span>开朗</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="和睦"><span class="al-checkmark"></span>和睦</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="无人在意/管束"><span class="al-checkmark"></span>无人在意/管束</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="等级森严"><span class="al-checkmark"></span>等级森严</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="紧张"><span class="al-checkmark"></span>紧张</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="分裂"><span class="al-checkmark"></span>分裂</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="封建/闭塞"><span class="al-checkmark"></span>封建/闭塞</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="其他"><span class="al-checkmark"></span>其他：<input type="text" class="al-input inline-input" data-key="环境氛围其他"></label>
+      </div>
+    </details>
+
+    <p>环境的氛围具体描述：
+    <textarea class="al-textarea" data-key="环境氛围具体描述"></textarea>
+
+    <details class="al-details" data-section="成长环境与养育者变化">
+      <summary class="al-summary">成长环境与养育者变化</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        角色的成长环境是否有过变化?
+        <label class="al-checkbox-label"><input type="checkbox" value="没有变化"><span class="al-checkmark"></span>没有</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="有变化"><span class="al-checkmark"></span>有 ➔ <input type="text" class="al-input inline-input" data-key="成长环境变化" style="width:60%;"></label>
+        <br>不同环境中的养育者是否有变化?
+        <label class="al-checkbox-label"><input type="checkbox" value="没有变化"><span class="al-checkmark"></span>没有</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="有变化"><span class="al-checkmark"></span>有 ➔ <input type="text" class="al-input inline-input" data-key="养育者变化" style="width:60%;"></label>
+      </div>
+    </details>
+
+    <p>成长环境所处的社会层级：<input type="text" class="al-input inline-input" data-key="社会层级" style="width:60%;">
+    <p>成长环境的贫富状况：<input type="text" class="al-input inline-input" data-key="贫富状况" style="width:60%;">
+
+    <details class="al-details" data-section="父母关系">
+      <summary class="al-summary">父母之间的关系如何?</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        <label class="al-checkbox-label"><input type="checkbox" value="恩爱"><span class="al-checkmark"></span>恩爱</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="和睦"><span class="al-checkmark"></span>和睦</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="有误会"><span class="al-checkmark"></span>有误会</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="仇视"><span class="al-checkmark"></span>仇视</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="离异/分居"><span class="al-checkmark"></span>离异/分居</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="一方或双方死亡"><span class="al-checkmark"></span>一方或双方死亡</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="不了解"><span class="al-checkmark"></span>不了解(如孤儿/神等)</label>
+      </div>
+    </details>
+
+    <p>父母关系具体描述：
+    <textarea class="al-textarea" data-key="父母关系具体描述"></textarea>
+
+    <details class="al-details" data-section="兄弟姐妹">
+      <summary class="al-summary">是否有兄弟姐妹?</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        <label class="al-checkbox-label"><input type="checkbox" value="没有"><span class="al-checkmark"></span>没有</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="不清楚"><span class="al-checkmark"></span>不清楚 ➔ 原因：<input type="text" class="al-input inline-input" data-key="无兄弟姐妹原因"></label>
+        <label class="al-checkbox-label"><input type="checkbox" value="有"><span class="al-checkmark"></span>有 ➔ 拥有：<input type="text" class="al-input inline-input" data-key="兄弟姐妹信息"></label>
+        <br>关系是：
+        <label class="al-checkbox-label"><input type="checkbox" value="普普通通"><span class="al-checkmark"></span>普普通通</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="亲密"><span class="al-checkmark"></span>亲密</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="紧张"><span class="al-checkmark"></span>紧张</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="需特别阐述"><span class="al-checkmark"></span>需特别阐述 ➔ <input type="text" class="al-input inline-input" data-key="兄弟姐妹关系阐述"></label>
+      </div>
+    </details>
+
+    <details class="al-details" data-section="童年重要影响">
+      <summary class="al-summary">童年重要影响与情感</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        在角色的成长经历中,对他影响最深的人是?
+        <label class="al-checkbox-label"><input type="checkbox" value="没有"><span class="al-checkmark"></span>没有</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="有"><span class="al-checkmark"></span>有 ➔ 影响是：<input type="text" class="al-input inline-input" data-key="最深影响的人及事" style="width:60%;"></label>
+        <br>未独立生活时，角色在成长环境中是否被爱？
+        <label class="al-checkbox-label"><input type="checkbox" value="是"><span class="al-checkmark"></span>是</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="否"><span class="al-checkmark"></span>否</label>
+        ➔ 简单事例：<input type="text" class="al-input inline-input" data-key="童年被爱事例" style="width:60%;">
+        <br>是否存在“发生于童年，却让角色难以忘怀、记忆至今”的往事？
+        <label class="al-checkbox-label"><input type="checkbox" value="无"><span class="al-checkmark"></span>无</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="有"><span class="al-checkmark"></span>有 ➔ <input type="text" class="al-input inline-input" data-key="童年难忘往事" style="width:60%;"></label>
+      </div>
+    </details>
+
+    <details class="al-details" data-section="童年财富">
+      <summary class="al-summary">未独立生活时，角色在成长环境中的可支配财富情况是？</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        <label class="al-checkbox-label"><input type="checkbox" value="极度拮据"><span class="al-checkmark"></span>极度拮据</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="适度"><span class="al-checkmark"></span>适度</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="要多少给多少"><span class="al-checkmark"></span>要多少给多少</label>
+        <br>未独立生活时，他是否有可储蓄的财产？
+        <label class="al-checkbox-label"><input type="checkbox" value="没有"><span class="al-checkmark"></span>没有</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="有"><span class="al-checkmark"></span>有 ➔ </label>
+        <label class="al-checkbox-label"><input type="checkbox" value="努力存款"><span class="al-checkmark"></span>努力存款</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="有许多富余"><span class="al-checkmark"></span>有许多富余</label>
+        ➔ 原因：<input type="text" class="al-input inline-input" data-key="童年储蓄原因">
+      </div>
+    </details>
+  </div>
+
+  <h2>环境影响 ENVIRONMENT</h2>
+  <div class="al-section">
+    <p>定义角色出生的地方（如“风景秀丽的乡村”“颓废的城镇”，其型是“汽车后座”等）：
+    <textarea class="al-textarea" data-key="出生地定义"></textarea>
+    <p>这个地方对他的影响是？（如行为习惯/想法等方面）：
+    <textarea class="al-textarea" data-key="出生地影响"></textarea>
+
+    <details class="al-details" data-section="地域环境关联">
+      <summary class="al-summary">地域与环境关联</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        目前所在的地域是角色年少时成长的地方吗？
+        <label class="al-checkbox-label"><input type="checkbox" value="是"><span class="al-checkmark"></span>是</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="不是"><span class="al-checkmark"></span>不是 ➔ 离开家乡的原因：<input type="text" class="al-input inline-input" data-key="离开家乡原因" style="width:50%;"></label>
+        <br>目前所在的地域有会令角色产生独特感受的场合/地点吗？
+        <label class="al-checkbox-label"><input type="checkbox" value="无"><span class="al-checkmark"></span>无</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="有"><span class="al-checkmark"></span>有 ➔ <input type="text" class="al-input inline-input" data-key="独特感受地点" style="width:60%;"></label>
+      </div>
+    </details>
+
+    <p>不同环境对角色的影响：<input type="text" class="al-input inline-input" data-key="不同环境影响" style="width:60%;">
+    <p>角色最希望生活的环境是？<input type="text" class="al-input inline-input" data-key="最希望生活的环境" style="width:60%;">
+    <p>让角色感到舒适的地方是：<input type="text" class="al-input inline-input" data-key="舒适的地方" style="width:60%;">
+  </div>
+
+  <h2>目标与羁绊 GOALS & BONDS</h2>
+  <div class="al-section">
+    <details class="al-details" data-section="人生终极目标">
+      <summary class="al-summary">角色的人生终极目标/必须要完成的事关乎什么？</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        <label class="al-checkbox-label"><input type="checkbox" value="权利"><span class="al-checkmark"></span>权利</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="金钱"><span class="al-checkmark"></span>金钱</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="感情"><span class="al-checkmark"></span>感情</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="复仇"><span class="al-checkmark"></span>复仇</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="无目标"><span class="al-checkmark"></span>无目标</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="其他"><span class="al-checkmark"></span>其他 ➔ <input type="text" class="al-input inline-input" data-key="目标其他"></label>
+      </div>
+    </details>
+
+    <p>目标具体描述：
+    <textarea class="al-textarea" data-key="终极目标具体描述"></textarea>
+
+    <details class="al-details" data-section="目标执着度">
+      <summary class="al-summary">角色对目标/这件事的执着程度如何？</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        <label class="al-checkbox-label"><input type="checkbox" value="不甚在意"><span class="al-checkmark"></span>不甚在意（实现不了也没关系）</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="不执着"><span class="al-checkmark"></span>不执着（但有适当机会会去做）</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="挂在心上"><span class="al-checkmark"></span>挂在心上（但不影响日常生活）</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="执着"><span class="al-checkmark"></span>执着（是为之努力的方向）</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="执念"><span class="al-checkmark"></span>执念（必须完成）</label>
+      </div>
+    </details>
+
+    <p>为达成目标，角色愿意付出：<input type="text" class="al-input inline-input" data-key="愿意付出的代价" style="width:60%;">
+    <p>遇到的最大困境/障碍是：<input type="text" class="al-input inline-input" data-key="最大困境" style="width:60%;">
+
+    <details class="al-details" data-section="困境与相关人物看法">
+      <summary class="al-summary">困境来源与他人看法</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        给角色造成困境/障碍的是具体的人/组织吗？
+        <label class="al-checkbox-label"><input type="checkbox" value="不是"><span class="al-checkmark"></span>不是</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="是"><span class="al-checkmark"></span>是 ➔ <input type="text" class="al-input inline-input" data-key="困境来源人或组织"></label>
+        <br>角色的“相关关键人物”通常如何看待角色的目标？
+        <br>
+        <label class="al-checkbox-label"><input type="checkbox" value="认同"><span class="al-checkmark"></span>认同 ➔</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="行动支持"><span class="al-checkmark"></span>行动支持</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="情感支持"><span class="al-checkmark"></span>情感支持</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="善意无力"><span class="al-checkmark"></span>善意但无能为力</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="漠视"><span class="al-checkmark"></span>漠视</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="不支持"><span class="al-checkmark"></span>但不支持 ➔ <input type="text" class="al-input inline-input" data-key="认同但不支持详情"></label>
+        <br>
+        <label class="al-checkbox-label"><input type="checkbox" value="不认同"><span class="al-checkmark"></span>不认同 ➔</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="最大阻力"><span class="al-checkmark"></span>最大阻力就是此人</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="行动阻挠"><span class="al-checkmark"></span>行动阻挠</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="但支持"><span class="al-checkmark"></span>但支持</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="漠视"><span class="al-checkmark"></span>漠视 ➔ <input type="text" class="al-input inline-input" data-key="不认同且漠视详情"></label>
+        <br>
+        <label class="al-checkbox-label"><input type="checkbox" value="无法理解"><span class="al-checkmark"></span>无法理解</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="并不知道"><span class="al-checkmark"></span>并不知道</label>
+      </div>
+    </details>
+
+    <p>如果完成/确定无法完成人生目标，角色接下来会做？
+    <textarea class="al-textarea" data-key="目标后续行动"></textarea>
+
+    <details class="al-details" data-section="结局与遗憾">
+      <summary class="al-summary">既定结局与遗憾</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        角色是否有既定的结局?
+        <label class="al-checkbox-label"><input type="checkbox" value="无"><span class="al-checkmark"></span>无</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="有"><span class="al-checkmark"></span>有 ➔ <input type="text" class="al-input inline-input" data-key="既定结局" style="width:60%;"></label>
+        <br>角色是否有难以释怀的遗憾?
+        <label class="al-checkbox-label"><input type="checkbox" value="无"><span class="al-checkmark"></span>无</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="有"><span class="al-checkmark"></span>有 ➔ <input type="text" class="al-input inline-input" data-key="难以释怀的遗憾" style="width:60%;"></label>
+        <br>如果可以重新活一次,角色会努力弥补遗憾吗?
+        <label class="al-checkbox-label"><input type="checkbox" value="不在乎"><span class="al-checkmark"></span>不在乎</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="不愿重活"><span class="al-checkmark"></span>不愿重活 ➔ 原因：<input type="text" class="al-input inline-input" data-key="不愿重活原因"></label>
+        <label class="al-checkbox-label"><input type="checkbox" value="愿意重生"><span class="al-checkmark"></span>愿意重生 ➔ 条件与弥补方式：<input type="text" class="al-input inline-input" data-key="重生弥补方式" style="width:40%;"></label>
+      </div>
+    </details>
+
+    <p>如果被告知明天就是世界末日,角色在24小时内会做什么?
+    <textarea class="al-textarea" data-key="末日24小时"></textarea>
+
+    <details class="al-details" data-section="立场与团体">
+      <summary class="al-summary">特定立场与团体关系</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        角色是否有一个特定的立场?
+        <label class="al-checkbox-label"><input type="checkbox" value="否"><span class="al-checkmark"></span>否</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="是"><span class="al-checkmark"></span>是 ➔ 立场是：<input type="text" class="al-input inline-input" data-key="特定立场"></label>
+        <br>角色是否在一个小组/团体中?
+        <label class="al-checkbox-label"><input type="checkbox" value="否"><span class="al-checkmark"></span>否</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="是"><span class="al-checkmark"></span>是 ➔ 团体与身份：<input type="text" class="al-input inline-input" data-key="团体与身份" style="width:50%;"></label>
+        <br>他与团体中其他成员的关系是：
+        <label class="al-checkbox-label"><input type="checkbox" value="和谐"><span class="al-checkmark"></span>和谐</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="紧张"><span class="al-checkmark"></span>紧张</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="其他"><span class="al-checkmark"></span>其他 ➔ <input type="text" class="al-input inline-input" data-key="团体关系其他"></label>
+        ➔ 原因：<input type="text" class="al-input inline-input" data-key="团体关系原因">
+      </div>
+    </details>
+
+    <p>他会为他的朋友做(最大善意)：<input type="text" class="al-input inline-input" data-key="对朋友最大善意" style="width:60%;">
+    <details class="al-details" data-section="养育经历">
+      <summary class="al-summary">是否有养育他人的经历?</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        <label class="al-checkbox-label"><input type="checkbox" value="无"><span class="al-checkmark"></span>无</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="有"><span class="al-checkmark"></span>有 ➔ 养育过：</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="子女"><span class="al-checkmark"></span>子女</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="弟、妹"><span class="al-checkmark"></span>弟、妹</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="其他亲属"><span class="al-checkmark"></span>其他亲属 ➔ <input type="text" class="al-input inline-input" data-key="养育其他亲属"></label>
+      </div>
+    </details>
+    <p>他会对他的敌人做(最大恶意)：<input type="text" class="al-input inline-input" data-key="对敌人最大恶意" style="width:60%;">
+
+    <details class="al-details" data-section="命运羁绊与背叛">
+      <summary class="al-summary">命运羁绊、善意与背叛</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        角色有与之命运羁绊的人吗?
+        <label class="al-checkbox-label"><input type="checkbox" value="无"><span class="al-checkmark"></span>无</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="有"><span class="al-checkmark"></span>有 ➔ 关系描述：<input type="text" class="al-input inline-input" data-key="命运羁绊关系" style="width:60%;"></label>
+        <br>角色一生中所感受过的最大善意经历及关系：<input type="text" class="al-input inline-input" data-key="最大善意经历" style="width:60%;">
+        <br>角色是否被背叛过?
+        <label class="al-checkbox-label"><input type="checkbox" value="没有"><span class="al-checkmark"></span>没有</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="有"><span class="al-checkmark"></span>有 ➔ </label>
+        伤害及背叛者：<input type="text" class="al-input inline-input" data-key="背叛伤害详情">
+        <br>事后如何处理：<input type="text" class="al-input inline-input" data-key="背叛处理方式" style="width:60%;">
+        <br>对性格的影响：
+        <label class="al-checkbox-label"><input type="checkbox" value="没有影响"><span class="al-checkmark"></span>没有</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="有影响"><span class="al-checkmark"></span>有 ➔ <input type="text" class="al-input inline-input" data-key="背叛对性格影响"></label>
+      </div>
+    </details>
+  </div>
+
+  <h2>休闲时光与工作习惯 LEISURE & WORK</h2>
+  <div class="al-section">
+    <details class="al-details" data-section="休息日类型">
+      <summary class="al-summary">本次休息类型与状态</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        <label class="al-checkbox-label"><input type="checkbox" value="常规休息日"><span class="al-checkmark"></span>常规休息日</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="特殊安排"><span class="al-checkmark"></span>特殊安排</label>
+        <br>角色休息时的状态与日常有差别吗？
+        <label class="al-checkbox-label"><input type="checkbox" value="无"><span class="al-checkmark"></span>无</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="有"><span class="al-checkmark"></span>有 ➔ <input type="text" class="al-input inline-input" data-key="休息状态差别"></label>
+      </div>
+    </details>
+
+    <p>休息日的时间安排：<input type="text" class="al-input inline-input" data-key="休息日安排" style="width:60%;">
+    <p>休息时不修边幅还是注重精致品质？<input type="text" class="al-input inline-input" data-key="休息品质偏好" style="width:60%;">
+    <p>休息时喜欢做什么？<input type="text" class="al-input inline-input" data-key="休息爱好" style="width:60%;">
+    <p>休息时最常待的地方是？<input type="text" class="al-input inline-input" data-key="休息常待地点" style="width:60%;">
+
+    <details class="al-details" data-section="休息时穿着与家务">
+      <summary class="al-summary">休息时穿着与生活自理</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        角色在休息时会穿：
+        <label class="al-checkbox-label"><input type="checkbox" value="居家服"><span class="al-checkmark"></span>居家服</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="个性服饰"><span class="al-checkmark"></span>个性服饰</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="特殊服饰"><span class="al-checkmark"></span>特殊服饰</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="作战服"><span class="al-checkmark"></span>作战服</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="不穿"><span class="al-checkmark"></span>不穿</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="其他"><span class="al-checkmark"></span>其他 ➔ <input type="text" class="al-input inline-input" data-key="休息穿着其他"></label>
+        <br>角色会定期维护和整理私人空间吗？
+        <label class="al-checkbox-label"><input type="checkbox" value="不会"><span class="al-checkmark"></span>不会</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="会"><span class="al-checkmark"></span>会</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="他人代劳"><span class="al-checkmark"></span>他人代劳</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="触发条件"><span class="al-checkmark"></span>需要触发条件</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="其他"><span class="al-checkmark"></span>其他 ➔ <input type="text" class="al-input inline-input" data-key="整理空间其他"></label>
+        <br>角色会自己做饭吗？
+        <label class="al-checkbox-label"><input type="checkbox" value="不会"><span class="al-checkmark"></span>不会</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="会"><span class="al-checkmark"></span>会 ➔ 厨艺：</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="精通"><span class="al-checkmark"></span>精通</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="尚可"><span class="al-checkmark"></span>尚可</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="不会但爱做"><span class="al-checkmark"></span>不会但爱做</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="勉强入口"><span class="al-checkmark"></span>勉强入口</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="厨房杀手"><span class="al-checkmark"></span>厨房杀手</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="其他"><span class="al-checkmark"></span>其他 ➔ <input type="text" class="al-input inline-input" data-key="厨艺其他"></label>
+      </div>
+    </details>
+
+    <details class="al-details" data-section="私人空间物品">
+      <summary class="al-summary">私人空间摆放物品</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        摆放特殊物品或纪念性物品吗？
+        <label class="al-checkbox-label"><input type="checkbox" value="不会"><span class="al-checkmark"></span>不会</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="会"><span class="al-checkmark"></span>会 ➔ 允许他人触碰吗？</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="不允许"><span class="al-checkmark"></span>不允许</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="允许"><span class="al-checkmark"></span>允许</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="仅特定的人"><span class="al-checkmark"></span>仅特定的人 ➔ <input type="text" class="al-input inline-input" data-key="特定触碰人"></label>
+        <label class="al-checkbox-label"><input type="checkbox" value="无人能进入"><span class="al-checkmark"></span>没有人能进入私人空间</label>
+      </div>
+    </details>
+
+    <details class="al-details" data-section="休息日打扰与结束">
+      <summary class="al-summary">休息日打扰、不为人知的行动与结束</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        这一日是否有工作相关的信息打扰？
+        <label class="al-checkbox-label"><input type="checkbox" value="无"><span class="al-checkmark"></span>无</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="有"><span class="al-checkmark"></span>有 ➔ 处理方式与是否中断休假：<input type="text" class="al-input inline-input" data-key="打扰处理" style="width:50%;"></label>
+        <br>这一日有不为人知的行动吗？
+        <label class="al-checkbox-label"><input type="checkbox" value="无"><span class="al-checkmark"></span>无</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="有"><span class="al-checkmark"></span>有 ➔ 展开说说：<input type="text" class="al-input inline-input" data-key="不为人知行动" style="width:60%;"></label>
+      </div>
+    </details>
+    <p>角色如何结束这一日：<input type="text" class="al-input inline-input" data-key="结束行程" style="width:60%;">
+
+    <details class="al-details" data-section="工作习惯与属性">
+      <summary class="al-summary">工作属性、习惯与解决问题</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        角色的工作是：<input type="text" class="al-input inline-input" data-key="具体工作">
+        工作身份证明：<input type="text" class="al-input inline-input" data-key="工作证明">
+        <br>有稳定的工作时段吗?
+        <label class="al-checkbox-label"><input type="checkbox" value="没有"><span class="al-checkmark"></span>没有</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="有"><span class="al-checkmark"></span>有 ➔ <input type="text" class="al-input inline-input" data-key="工作时段"></label>
+        <br>着装偏向于：<input type="text" class="al-input inline-input" data-key="工作着装偏向">
+        <label class="al-checkbox-label"><input type="checkbox" value="必须穿着制服"><span class="al-checkmark"></span>必须穿着制服</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="需要隐藏身份"><span class="al-checkmark"></span>需要隐藏身份</label>
+        <br>解决工作餐：
+        <label class="al-checkbox-label"><input type="checkbox" value="自己带饭"><span class="al-checkmark"></span>自己带饭</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="食堂"><span class="al-checkmark"></span>食堂</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="外卖/饭店"><span class="al-checkmark"></span>外卖/饭店</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="蹭饭"><span class="al-checkmark"></span>蹭饭</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="只吃零食"><span class="al-checkmark"></span>只吃零食</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="营养液/电池"><span class="al-checkmark"></span>营养液/电池</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="其他"><span class="al-checkmark"></span>其他 ➔ <input type="text" class="al-input inline-input" data-key="工作餐其他"></label>
+        <br>常喝的饮料：
+        <label class="al-checkbox-label"><input type="checkbox" value="咖啡"><span class="al-checkmark"></span>咖啡</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="茶"><span class="al-checkmark"></span>茶</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="碳酸饮料"><span class="al-checkmark"></span>碳酸饮料</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="奶茶"><span class="al-checkmark"></span>奶茶</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="药"><span class="al-checkmark"></span>药</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="只喝水"><span class="al-checkmark"></span>只喝水</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="不喝"><span class="al-checkmark"></span>不喝</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="其他"><span class="al-checkmark"></span>其他 ➔ <input type="text" class="al-input inline-input" data-key="饮料其他"></label>
+      </div>
+    </details>
+
+    <p>认真工作还是消极怠工及策略：<input type="text" class="al-input inline-input" data-key="工作态度策略" style="width:60%;">
+    <p>偏向于团队合作还是独立完成：<input type="text" class="al-input inline-input" data-key="工作合作偏向" style="width:60%;">
+    <p>当工作遇到麻烦,会怎么做：<input type="text" class="al-input inline-input" data-key="工作麻烦处理" style="width:60%;">
+    <p>领导/对手/下属对角色的印象：<input type="text" class="al-input inline-input" data-key="职场印象" style="width:60%;">
+    <p>工作中的个人习惯：<input type="text" class="al-input inline-input" data-key="工作个人习惯" style="width:60%;">
+
+    <details class="al-details" data-section="工作独特饰品与私事">
+      <summary class="al-summary">工作场合的独特饰品、口头禅与私人问题</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        工作场合有独特的饰品/工具/小物件吗?
+        <label class="al-checkbox-label"><input type="checkbox" value="无"><span class="al-checkmark"></span>无</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="有"><span class="al-checkmark"></span>有 ➔ <input type="text" class="al-input inline-input" data-key="工作饰品"></label>
+        <br>被触碰损坏后会如何处理：<input type="text" class="al-input inline-input" data-key="饰品损坏处理" style="width:60%;">
+      </div>
+    </details>
+
+    <p>工作场合口头禅：<input type="text" class="al-input inline-input" data-key="工作口头禅" style="width:60%;">
+    <p>工作中如何处理私人问题：<input type="text" class="al-input inline-input" data-key="工作私人问题处理" style="width:60%;">
+    <p>是否有隐藏身份或多份职业：<input type="text" class="al-input inline-input" data-key="隐藏多份职业" style="width:60%;">
+  </div>
+
+  <h2>私密档案 INTIMATE PROFILE</h2>
+  <div class="al-section">
+    <p>仅限深夜开启的卷宗，记录灵魂最深处的渴望与触碰。
+    <details class="al-details" data-section="亲密风格">
+      <summary class="al-summary">亲密风格 (Intimate Style)</summary>
+      <div class="al-details-content" id="nsfw-style-container" data-deletable="true">
+        <label class="al-checkbox-label"><input type="checkbox" value="克制温柔型"><span class="al-checkmark"></span>克制温柔型</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="热情主动型"><span class="al-checkmark"></span>热情主动型</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="粗暴占有型"><span class="al-checkmark"></span>粗暴占有型</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="甘愿奉献型"><span class="al-checkmark"></span>甘愿奉献型</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="循序渐进型"><span class="al-checkmark"></span>循序渐进型</label>
+        <div class="tag-add-group">
+          <input type="text" class="al-input" id="new-nsfw-style-tag" placeholder="添加自定义亲密风格...">
+          <button class="al-btn" onclick="addTag('nsfw-style-container', 'new-nsfw-style-tag')">+</button>
+        </div>
+      </div>
+    </details>
+
+    <details class="al-details" data-section="身体敏感带">
+      <summary class="al-summary">身体敏感带 (Sensitive Zones)</summary>
+      <div class="al-details-content" id="nsfw-zones-container" data-deletable="true">
+        <label class="al-checkbox-label"><input type="checkbox" value="耳后/颈侧"><span class="al-checkmark"></span>耳后/颈侧</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="喉结"><span class="al-checkmark"></span>喉结</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="腰窝"><span class="al-checkmark"></span>腰窝</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="大腿内侧"><span class="al-checkmark"></span>大腿内侧</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="胸膛/乳尖"><span class="al-checkmark"></span>胸膛/乳尖</label>
+        <div class="tag-add-group">
+          <input type="text" class="al-input" id="new-nsfw-zones-tag" placeholder="添加自定义敏感带...">
+          <button class="al-btn" onclick="addTag('nsfw-zones-container', 'new-nsfw-zones-tag')">+</button>
+        </div>
+      </div>
+    </details>
+
+    <details class="al-details" data-section="特殊癖好">
+      <summary class="al-summary">特殊癖好 (Kinks & Fetishes)</summary>
+      <div class="al-details-content" id="nsfw-kinks-container" data-deletable="true">
+        <label class="al-checkbox-label"><input type="checkbox" value="bdsm"><span class="al-checkmark"></span>bdsm</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="恋物"><span class="al-checkmark"></span>恋物</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="恋足"><span class="al-checkmark"></span>恋足</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="恋奶"><span class="al-checkmark"></span>恋奶</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="dirtytalk"><span class="al-checkmark"></span>dirtytalk</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="露出/窥视"><span class="al-checkmark"></span>露出/窥视</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="强制高潮"><span class="al-checkmark"></span>强制高潮</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="乳交"><span class="al-checkmark"></span>乳交</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="口癖"><span class="al-checkmark"></span>口癖</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="圣水"><span class="al-checkmark"></span>圣水</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="窒息"><span class="al-checkmark"></span>窒息</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="电击"><span class="al-checkmark"></span>电击</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="气味爱好者"><span class="al-checkmark"></span>气味爱好者（体味）</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="疼痛崇拜"><span class="al-checkmark"></span>疼痛崇拜</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="半公开场合刺激"><span class="al-checkmark"></span>半公开场合刺激</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="绿帽奴"><span class="al-checkmark"></span>绿帽奴</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="Phone sex"><span class="al-checkmark"></span>Phone sex</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="视频云做爱"><span class="al-checkmark"></span>视频云做爱</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="文字文爱"><span class="al-checkmark"></span>文字"文爱"</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="乳夹/阴蒂夹"><span class="al-checkmark"></span>乳夹/阴蒂夹</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="角色扮演"><span class="al-checkmark"></span>角色扮演</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="寸止"><span class="al-checkmark"></span>寸止</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="坐脸"><span class="al-checkmark"></span>坐脸</label>
+        <div class="tag-add-group">
+          <input type="text" class="al-input" id="new-nsfw-kinks-tag" placeholder="添加自定义特殊癖好...">
+          <button class="al-btn" onclick="addTag('nsfw-kinks-container', 'new-nsfw-kinks-tag')">+</button>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <h2>角色稳定性评定</h2>
+  <div class="al-section">
+    <details class="al-details" data-section="危险程度评估">
+      <summary class="al-summary">危险程度评估</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        <label class="al-checkbox-label"><input type="checkbox" value="安全"><span class="al-checkmark"></span>安全 (情绪稳定，无危害)</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="特定触发"><span class="al-checkmark"></span>特定触发 (面对特定人事展现危害)</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="极高不稳定性"><span class="al-checkmark"></span>极高不稳定性 ➔ 原因：<input type="text" class="al-input inline-input" data-key="极高不稳定性原因" style="width: 50%;" placeholder="背后原因..."></label>
+      </div>
+    </details>
+
+    <details class="al-details" data-section="监管与约束状态">
+      <summary class="al-summary">监管与约束状态</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        <label class="al-checkbox-label"><input type="checkbox" value="无"><span class="al-checkmark"></span>无 / 一直是自由人</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="逃亡"><span class="al-checkmark"></span>逃亡 ➔ 前责任人：<input type="text" class="al-input inline-input" data-key="逃亡责任人" placeholder="部门/人..."></label>
+        <label class="al-checkbox-label"><input type="checkbox" value="羁押"><span class="al-checkmark"></span>羁押在监管部门</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="高度绑定"><span class="al-checkmark"></span>行动与责任人高度绑定 ➔ 责任人：<input type="text" class="al-input inline-input" data-key="绑定责任人" placeholder="绑定对象..."></label>
+        <br>监管方式：<br>
+        <label class="al-checkbox-label"><input type="checkbox" value="远程监控"><span class="al-checkmark"></span>远程监控，角色并无察觉</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="定期报备"><span class="al-checkmark"></span>角色须定期到责任人处报备</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="其他监管"><span class="al-checkmark"></span>其他 ➔ 方式：<input type="text" class="al-input inline-input" data-key="其他监管方式" placeholder="其他方式..."></label>
+      </div>
+    </details>
+  </div>
+
+  <h2>情感状态 RELATIONSHIPS</h2>
+  <div class="al-section">
+    <details class="al-details" data-section="爱情观念">
+      <summary class="al-summary">爱情观念</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        <label class="al-checkbox-label"><input type="checkbox" value="从未思考过"><span class="al-checkmark"></span>从未思考过</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="独身主义"><span class="al-checkmark"></span>独身主义</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="期待体验"><span class="al-checkmark"></span>期待/享受体验，未思考结果</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="结果重要"><span class="al-checkmark"></span>恋爱结果重要，以终生为目标</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="独特观念"><span class="al-checkmark"></span>独特观念 ➔ 内容：<input type="text" class="al-input inline-input" data-key="独特爱情观" style="width: 50%;" placeholder="独特观念..."></label>
+      </div>
+    </details>
+
+    <details class="al-details" data-section="目前的感情状态">
+      <summary class="al-summary">目前的感情状态</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        <label class="al-checkbox-label"><input type="checkbox" value="单身"><span class="al-checkmark"></span>单身 ➔ 详情：<input type="text" class="al-input inline-input" data-key="单身详情" placeholder="有无心仪对象..."></label>
+        <label class="al-checkbox-label"><input type="checkbox" value="暗恋"><span class="al-checkmark"></span>暗恋 ➔ 对象/状态：<input type="text" class="al-input inline-input" data-key="暗恋详情" placeholder="暗恋详情..."></label>
+        <label class="al-checkbox-label"><input type="checkbox" value="热恋中"><span class="al-checkmark"></span>热恋中 ➔ 历程：<input type="text" class="al-input inline-input" data-key="热恋历程" placeholder="简述历程..."></label>
+        <label class="al-checkbox-label"><input type="checkbox" value="平稳中"><span class="al-checkmark"></span>平稳中 ➔ 历程：<input type="text" class="al-input inline-input" data-key="平稳历程" placeholder="简述历程..."></label>
+        <label class="al-checkbox-label"><input type="checkbox" value="分居冷战"><span class="al-checkmark"></span>分居/冷战 ➔ 原因：<input type="text" class="al-input inline-input" data-key="冷战原因" placeholder="原因..."></label>
+        <label class="al-checkbox-label"><input type="checkbox" value="分手离异"><span class="al-checkmark"></span>分手/离异 ➔ 原因：<input type="text" class="al-input inline-input" data-key="分手原因" placeholder="原因..."></label>
+      </div>
+    </details>
+  </div>
+
+  <h2>特殊物品与传奇造物</h2>
+  <div class="al-section">
+    <details class="al-details" data-section="物品属性界定">
+      <summary class="al-summary">物品属性界定</summary>
+      <div class="al-details-content" style="grid-template-columns: 1fr;">
+        <label class="al-checkbox-label"><input type="checkbox" value="世界观造物"><span class="al-checkmark"></span>世界观造物</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="人物专属道具"><span class="al-checkmark"></span>人物专属道具</label>
+        <br>制造方：<br>
+        <label class="al-checkbox-label"><input type="checkbox" value="自然造物"><span class="al-checkmark"></span>自然造物 / 已不可考</label>
+        <label class="al-checkbox-label"><input type="checkbox" value="明确创造者"><span class="al-checkmark"></span>有明确创造者 ➔ 是：<input type="text" class="al-input inline-input" data-key="创造者名称" placeholder="创造者..."></label>
+        <label class="al-checkbox-label"><input type="checkbox" value="机密"><span class="al-checkmark"></span>机密，待破解/解密</label>
+      </div>
+    </details>
+
+    <details class="al-details" data-section="自身特殊物品">
+      <summary class="al-summary">自身特殊物品</summary>
+      <div class="al-details-content" id="custom-items-container" data-deletable="true" style="grid-template-columns: 1fr;">
+        <div class="tag-add-group" style="border-top:none; margin-top:0; padding-top:0;">
+          <input type="text" class="al-input" id="new-custom-item" placeholder="添加自身特殊物品 (如：旧怀表、家族戒指)..." style="width: 70%;">
+          <button class="al-btn" onclick="addCustomItem()">+</button>
+        </div>
+      </div>
+    </details>
+
+    <p>存在意义（对于世界/设定的重大意义）：
+    <textarea class="al-textarea" data-key="存在意义" placeholder="填写物品存在的重大意义..."></textarea>
+  </div>
+
+  <div style="text-align: center; margin-top: 30px;">
+    <button class="al-btn" id="generate-json-btn" onclick="generateText()">确认生成</button>
+    <button class="al-btn" id="clear-btn" onclick="clearForm()">一键清空</button>
+  </div>
+
+  <textarea class="al-textarea" id="text-output" style="display:none; height: 400px; margin-top:20px; font-family: monospace; white-space: pre-wrap;"></textarea>
+
+  <div class="al-footer">
+    — 由 Cosmos Fleur 炼金工坊 镌刻 —
+  </div>
+</div>
+
+<script>
+  // 注入删除按钮的辅助函数
+  function injectDeleteButtons() {
+    const containers = document.querySelectorAll('div[data-deletable="true"]');
+    containers.forEach(container => {
+      const labels = container.querySelectorAll('.al-checkbox-label');
+      labels.forEach(label => {
+        if (!label.querySelector('.tag-delete-btn')) {
+          const delBtn = document.createElement('span');
+          delBtn.className = 'tag-delete-btn';
+          delBtn.innerHTML = '×';
+          delBtn.title = "移除此项";
+          delBtn.onclick = function(e) {
+            e.preventDefault(); // 防止触发 checkbox 的点击
+            label.remove();
+          };
+          label.appendChild(delBtn);
+        }
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', injectDeleteButtons);
+
+  // 添加新标签的通用函数
+  function addTag(containerId, inputId) {
+    const inputEl = document.getElementById(inputId);
+    const tagText = inputEl.value.trim();
+    if (!tagText) return;
+
+    const container = document.getElementById(containerId);
+    const addGroup = inputEl.parentElement;
+
+    const newLabel = document.createElement('label');
+    newLabel.className = 'al-checkbox-label custom-tag'; // 标记为用户自定义标签
+    newLabel.innerHTML = `<input type="checkbox" value="${tagText}" checked><span class="al-checkmark"></span>${tagText}`;
+
+    const delBtn = document.createElement('span');
+    delBtn.className = 'tag-delete-btn';
+    delBtn.innerHTML = '×';
+    delBtn.title = "移除此项";
+    delBtn.onclick = function(e) {
+      e.preventDefault();
+      newLabel.remove();
+    };
+    newLabel.appendChild(delBtn);
+
+    container.insertBefore(newLabel, addGroup);
+    inputEl.value = '';
+  }
+
+  // 自身特殊物品添加
+  function addCustomItem() {
+    const inputEl = document.getElementById('new-custom-item');
+    const tagText = inputEl.value.trim();
+    if (!tagText) return;
+
+    const container = document.getElementById('custom-items-container');
+    const addGroup = inputEl.parentElement;
+
+    const newLabel = document.createElement('label');
+    newLabel.className = 'al-checkbox-label custom-tag';
+    newLabel.innerHTML = `<input type="checkbox" value="${tagText}" checked><span class="al-checkmark"></span>${tagText}`;
+
+    const delBtn = document.createElement('span');
+    delBtn.className = 'tag-delete-btn';
+    delBtn.innerHTML = '×';
+    delBtn.title = "移除此项";
+    delBtn.onclick = function(e) {
+      e.preventDefault();
+      newLabel.remove();
+    };
+    newLabel.appendChild(delBtn);
+
+    container.insertBefore(newLabel, addGroup);
+    inputEl.value = '';
+  }
+
+  // 一键清空表单
+  function clearForm() {
+    if(!confirm("确定要清空所有已填写和勾选的内容吗？")) return;
+
+    document.querySelectorAll('input[type="text"]').forEach(input => {
+      input.value = '';
+    });
+
+    document.querySelectorAll('textarea:not(#text-output)').forEach(textarea => {
+      textarea.value = '';
+    });
+
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+      checkbox.checked = false;
+    });
+
+    document.querySelectorAll('.custom-tag').forEach(tag => {
+      tag.remove();
+    });
+
+    const outputEl = document.getElementById('text-output');
+    outputEl.value = '';
+    outputEl.style.display = 'none';
+  }
+
+  // 提取数据并生成纯文本
+  function generateText() {
+    let outputText = "=== 造物真理卷轴 提取记录 ===\n\n";
+
+    // 1. 提取基础信息 (base-info-row)
+    let hasBaseInfo = false;
+    let baseInfoText = "【基础信息】\n";
+
+    // 独立 input
+    document.querySelectorAll('.base-info-row > input[type="text"]').forEach(input => {
+      const key = input.getAttribute('data-key');
+      if (key && input.value.trim() !== '') {
+        baseInfoText += `- ${key}: ${input.value.trim()}\n`;
+        hasBaseInfo = true;
+      }
+    });
+
+    // checkbox 及相关 input
+    document.querySelectorAll('.base-info-row').forEach(row => {
+      const field = row.getAttribute('data-field');
+      if (field) {
+        const checkedLabels = Array.from(row.querySelectorAll('input[type="checkbox"]:checked'));
+        if (checkedLabels.length > 0) {
+          let vals = [];
+          checkedLabels.forEach(cb => {
+            let val = cb.value || cb.nextElementSibling.nextSibling.textContent.trim();
+            // 检查同级或父级中是否有对应的补充 input
+            let parentLabel = cb.closest('label');
+            if(parentLabel) {
+               let relatedInput = parentLabel.querySelector('input[type="text"]');
+               if(relatedInput && relatedInput.value.trim() !== '') {
+                  val += ` (${relatedInput.value.trim()})`;
+               }
+            }
+            vals.push(val);
+          });
+          baseInfoText += `- ${field}: ${vals.join(' | ')}\n`;
+          hasBaseInfo = true;
+        }
+      }
+    });
+
+    if(hasBaseInfo) outputText += baseInfoText + "\n";
+
+    // 2. 提取独立说明与简述 (p > input, textarea)
+    let hasIndependent = false;
+    let independentText = "【补充说明与简述】\n";
+    document.querySelectorAll('.al-section > textarea[data-key], .al-section > p > input[type="text"][data-key]').forEach(el => {
+      const key = el.getAttribute('data-key');
+      if (key && el.value.trim() !== '') {
+        independentText += `[${key}]\n${el.value.trim()}\n\n`;
+        hasIndependent = true;
+      }
+    });
+
+    if(hasIndependent) outputText += independentText;
+
+    // 3. 提取分栏设定 (details)
+    let hasDetails = false;
+    let detailsText = "【详细分栏设定】\n";
+
+    document.querySelectorAll('details.al-details').forEach(details => {
+      const sectionName = details.getAttribute('data-section') || details.querySelector('summary').innerText.trim();
+      let sectionOptions = [];
+      let sectionInputs = [];
+
+      // 提取勾选的复选框及内部补充文本
+      details.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+        let val = cb.value;
+        if(!val) {
+          const textNode = cb.nextElementSibling.nextSibling;
+          val = textNode ? textNode.textContent.trim() : '';
+        }
+
+        let parentLabel = cb.closest('label');
+        if(parentLabel) {
+           let relatedInput = parentLabel.querySelector('input[type="text"]');
+           if(relatedInput && relatedInput.value.trim() !== '') {
+              val += ` (${relatedInput.value.trim()})`;
+           }
+        }
+        if(val) sectionOptions.push(val);
+      });
+
+      // 提取游离的文本输入框（不包含在label内的）
+      details.querySelectorAll('.al-details-content > input[type="text"][data-key], .al-details-content > br + input[type="text"][data-key], .al-details-content > div > input[type="text"][data-key]').forEach(input => {
+        const key = input.getAttribute('data-key');
+        // 排除掉添加标签的输入框
+        if (key && input.value.trim() !== '' && input.id !== 'new-ext-tag' && input.id !== 'new-int-tag' && input.id !== 'new-nsfw-style-tag' && input.id !== 'new-nsfw-zones-tag' && input.id !== 'new-nsfw-kinks-tag' && input.id !== 'new-custom-item') {
+          sectionInputs.push(`${key}: ${input.value.trim()}`);
+        }
+      });
+
+      if (sectionOptions.length > 0 || sectionInputs.length > 0) {
+        detailsText += `◆ ${sectionName} ◆\n`;
+        if(sectionOptions.length > 0) detailsText += `  选中项: ${sectionOptions.join(', ')}\n`;
+        if(sectionInputs.length > 0) detailsText += `  补充: ${sectionInputs.join(' | ')}\n`;
+        detailsText += "\n";
+        hasDetails = true;
+      }
+    });
+
+    if(hasDetails) outputText += detailsText;
+
+    if(!hasBaseInfo && !hasIndependent && !hasDetails) {
+       outputText = "您尚未填写或勾选任何内容。";
+    }
+
+    const outputEl = document.getElementById('text-output');
+    outputEl.value = outputText;
+    outputEl.style.display = 'block';
+
+    // 平滑滚动到底部
+    outputEl.scrollIntoView({ behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
+```
+</content>
